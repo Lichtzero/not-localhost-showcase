@@ -153,47 +153,79 @@ export const MultiverseHUD: React.FC<MultiverseHUDProps> = ({
 
       {/* HOVER CARD: details for the planet (or dock entry) under the pointer */}
       <div className="flex-1 flex items-center justify-end pointer-events-none md:pr-4">
-        {hoveredProject && (
-          <div
-            data-ui-element="true"
-            onClick={() => onSelectProject(hoveredProject)}
-            onMouseEnter={() => onHoverProject(hoveredProject)}
-            onMouseLeave={() => onHoverProject(null)}
-            className={`hidden md:block pointer-events-auto max-w-sm w-full p-5 rounded-lg border border-neutral-700/80 bg-neutral-950/90 shadow-[0_8px_32px_rgba(0,0,0,0.8)] backdrop-blur-md transition-colors group ${
-              hoveredProject.url ? 'cursor-pointer hover:border-cyan-500/80' : ''
-            }`}
-          >
-            <div className="flex items-start gap-3">
-              <span className="font-orbitron text-3xl font-black leading-none" style={{ color: hoveredProject.themeColor }}>
-                {hoveredNumber}
+        {hoveredProject && (() => {
+          // Tint the card with this planet's own colours so each project feels distinct
+          const main = hoveredProject.themeColor;
+          const accent = hoveredProject.sphere.colorTertiary;
+          // Lightened versions for text, so even dark planet colours stay readable
+          const mainText = `color-mix(in srgb, ${main} 55%, white)`;
+          const accentText = `color-mix(in srgb, ${accent} 55%, white)`;
+          return (
+            <div
+              key={hoveredProject.id}
+              data-ui-element="true"
+              onClick={() => onSelectProject(hoveredProject)}
+              onMouseEnter={() => onHoverProject(hoveredProject)}
+              onMouseLeave={() => onHoverProject(null)}
+              className={`hidden md:block relative overflow-hidden pointer-events-auto max-w-sm w-full p-5 rounded-xl border-2 backdrop-blur-md animate-fade-in ${
+                hoveredProject.url ? 'cursor-pointer' : ''
+              }`}
+              style={{
+                borderColor: `${main}cc`,
+                background: `linear-gradient(135deg, ${main}40 0%, rgba(10,10,12,0.92) 45%, ${accent}30 100%)`,
+                boxShadow: `0 0 36px ${main}55, 0 8px 32px rgba(0,0,0,0.8)`,
+              }}
+            >
+              {/* Accent bar along the top edge */}
+              <div
+                className="absolute inset-x-0 top-0 h-1.5"
+                style={{ background: `linear-gradient(90deg, ${main}, ${accent})` }}
+              />
+
+              <div className="flex items-start gap-3">
+                <span
+                  className="font-orbitron flex h-12 w-12 shrink-0 items-center justify-center rounded-lg text-2xl font-black text-black"
+                  style={{ background: `linear-gradient(135deg, ${main}, ${accent})` }}
+                >
+                  {hoveredNumber}
+                </span>
+                <div className="min-w-0">
+                  <h2 className="font-chakra text-lg font-bold leading-snug text-white">{hoveredProject.subtitle}</h2>
+                  <p className="font-chakra mt-1 text-xs font-semibold uppercase tracking-wider" style={{ color: accentText }}>
+                    {hoveredProject.wizardOwner.avatarRune} {hoveredProject.wizardOwner.name}
+                  </p>
+                </div>
+              </div>
+
+              <span
+                className="font-chakra mt-3 inline-block rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider"
+                style={{ color: mainText, borderColor: `${main}aa`, backgroundColor: `${main}33` }}
+              >
+                {hoveredProject.sector} · {hoveredProject.year}
               </span>
-              <div className="min-w-0">
-                <h2 className="font-chakra text-lg font-bold leading-snug text-white">{hoveredProject.subtitle}</h2>
-                <p className="font-chakra mt-1 text-xs uppercase tracking-wider text-neutral-400">
-                  {hoveredProject.wizardOwner.avatarRune} {hoveredProject.wizardOwner.name}
-                </p>
+
+              <p
+                className="mt-3 border-l-[3px] pl-2.5 text-xs italic leading-snug text-neutral-200"
+                style={{ borderColor: main }}
+              >
+                {hoveredProject.observerFigure.quote}
+              </p>
+
+              <div
+                className="font-chakra mt-4 flex items-center gap-1.5 border-t pt-3 text-xs font-bold uppercase tracking-wider"
+                style={{ borderColor: `${main}55` }}
+              >
+                {hoveredProject.url ? (
+                  <span className="flex items-center gap-1.5" style={{ color: accentText }}>
+                    Visit project <ArrowUpRight className="h-3.5 w-3.5" />
+                  </span>
+                ) : (
+                  <span className="text-neutral-400">Link coming soon</span>
+                )}
               </div>
             </div>
-
-            <p className="font-chakra mt-3 text-[11px] uppercase tracking-wider text-neutral-500">
-              {hoveredProject.sector} · {hoveredProject.year}
-            </p>
-
-            <p className="mt-3 text-xs italic leading-snug text-neutral-300 border-l-2 border-neutral-700 pl-2.5">
-              {hoveredProject.observerFigure.quote}
-            </p>
-
-            <div className="font-chakra mt-4 flex items-center gap-1.5 border-t border-neutral-800/80 pt-3 text-xs font-bold uppercase tracking-wider">
-              {hoveredProject.url ? (
-                <span className="flex items-center gap-1.5 text-cyan-300">
-                  Visit project <ArrowUpRight className="h-3.5 w-3.5" />
-                </span>
-              ) : (
-                <span className="text-neutral-500">Link coming soon</span>
-              )}
-            </div>
-          </div>
-        )}
+          );
+        })()}
       </div>
 
       {/* BOTTOM: controls hint, category filter and project quick-select dock */}
