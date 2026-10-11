@@ -1,11 +1,11 @@
 {
   "id": "lakshmi-supriya",
-  "url": "https://example.com",
+  "url": "https://freeingtheparrot2.vercel.app/",
   "code": "SPHERE-07 // LAKSHMI-SUPRIYA",
   "title": "LAKSHMI SUPRIYA",
-  "subtitle": "Project title goes here",
-  "year": "2050 CE",
-  "sector": "BIOMETRICS & PERCEPTION",
+  "subtitle": "FREEING THE PARROT 2.0",
+  "year": "2035 CE",
+  "sector": "PERVASIVE SURVEILLANCE & PROFILING",
   "themeColor": "#b71c1c",
   "sphere": {
     "radius": 2.6,
@@ -45,7 +45,7 @@
   },
   "observerFigure": {
     "stance": "oracle",
-    "quote": "“A one-line description of the project goes here.”",
+    "quote": "A critical design research project that uses an interactive AI system to question the power, trust, and ownership dynamics of human–AI relationships.",
     "beaconColor": "#d50000"
   },
   "wizardOwner": {
