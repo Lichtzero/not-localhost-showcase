@@ -1,0 +1,56 @@
+{
+  "id": "aabha-wagh",
+  "url": "https://example.com",
+  "code": "SPHERE-01 // AABHA-WAGH",
+  "title": "AABHA WAGH",
+  "subtitle": "Project title goes here",
+  "year": "2050 CE",
+  "sector": "BIOMETRICS & PERCEPTION",
+  "themeColor": "#ff3d00",
+  "sphere": {
+    "radius": 2.9,
+    "position": [
+      0,
+      2,
+      0
+    ],
+    "colorPrimary": "#ff3d00",
+    "colorSecondary": "#d84315",
+    "colorTertiary": "#00e5ff",
+    "fresnelPower": 2.2,
+    "surfaceDistortion": 0.18,
+    "wireColor": "#ff6e40",
+    "rings": [
+      {
+        "radius": 4.8,
+        "tube": 0.022,
+        "tiltX": 0.8,
+        "tiltY": 0.3,
+        "tiltZ": 0.2,
+        "speed": 0.003,
+        "hasSatellite": true,
+        "satelliteColor": "#00e5ff"
+      },
+      {
+        "radius": 9.6,
+        "tube": 0.016,
+        "tiltX": -0.4,
+        "tiltY": 0.9,
+        "tiltZ": -0.5,
+        "speed": -0.002,
+        "hasSatellite": true,
+        "satelliteColor": "#ffd700"
+      }
+    ]
+  },
+  "observerFigure": {
+    "stance": "surveyor",
+    "quote": "“A one-line description of the project goes here.”",
+    "beaconColor": "#ff3d00"
+  },
+  "wizardOwner": {
+    "name": "Aabha Wagh",
+    "wizardTitle": "Speculative Designer",
+    "avatarRune": "👁️"
+  }
+}

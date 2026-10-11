@@ -1,0 +1,56 @@
+{
+  "id": "iniya-r",
+  "url": "https://example.com",
+  "code": "SPHERE-05 // INIYA-R",
+  "title": "INIYA R",
+  "subtitle": "Project title goes here",
+  "year": "2050 CE",
+  "sector": "SYNTHETIC ENTITIES",
+  "themeColor": "#ffb300",
+  "sphere": {
+    "radius": 2.8,
+    "position": [
+      11,
+      -7,
+      11
+    ],
+    "colorPrimary": "#ffb300",
+    "colorSecondary": "#ff6f00",
+    "colorTertiary": "#7c4dff",
+    "fresnelPower": 2.6,
+    "surfaceDistortion": 0.19,
+    "wireColor": "#ffe082",
+    "rings": [
+      {
+        "radius": 4.8,
+        "tube": 0.022,
+        "tiltX": 0.7,
+        "tiltY": 0.6,
+        "tiltZ": 0.2,
+        "speed": 0.0019,
+        "hasSatellite": true,
+        "satelliteColor": "#7c4dff"
+      },
+      {
+        "radius": 10.6,
+        "tube": 0.015,
+        "tiltX": -0.5,
+        "tiltY": 0.7,
+        "tiltZ": -0.6,
+        "speed": -0.002,
+        "hasSatellite": true,
+        "satelliteColor": "#ffd700"
+      }
+    ]
+  },
+  "observerFigure": {
+    "stance": "sentinel",
+    "quote": "“A one-line description of the project goes here.”",
+    "beaconColor": "#ffd700"
+  },
+  "wizardOwner": {
+    "name": "Iniya R",
+    "wizardTitle": "Speculative Designer",
+    "avatarRune": "⚖️"
+  }
+}

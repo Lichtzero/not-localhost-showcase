@@ -1,0 +1,56 @@
+{
+  "id": "medha-halapnavar",
+  "url": "https://example.com",
+  "code": "SPHERE-08 // MEDHA-HALAPNAVAR",
+  "title": "MEDHA HALAPNAVAR",
+  "subtitle": "Project title goes here",
+  "year": "2050 CE",
+  "sector": "SYNTHETIC ENTITIES",
+  "themeColor": "#0d47a1",
+  "sphere": {
+    "radius": 2.7,
+    "position": [
+      -12,
+      -9,
+      21
+    ],
+    "colorPrimary": "#0d47a1",
+    "colorSecondary": "#1a237e",
+    "colorTertiary": "#64ffda",
+    "fresnelPower": 2.4,
+    "surfaceDistortion": 0.2,
+    "wireColor": "#448aff",
+    "rings": [
+      {
+        "radius": 4.8,
+        "tube": 0.02,
+        "tiltX": 0.8,
+        "tiltY": -0.2,
+        "tiltZ": 0.6,
+        "speed": 0.0018,
+        "hasSatellite": true,
+        "satelliteColor": "#64ffda"
+      },
+      {
+        "radius": 10.5,
+        "tube": 0.015,
+        "tiltX": -0.5,
+        "tiltY": 0.6,
+        "tiltZ": -0.7,
+        "speed": -0.002,
+        "hasSatellite": true,
+        "satelliteColor": "#2979ff"
+      }
+    ]
+  },
+  "observerFigure": {
+    "stance": "monolith",
+    "quote": "“A one-line description of the project goes here.”",
+    "beaconColor": "#2979ff"
+  },
+  "wizardOwner": {
+    "name": "Medha Halapnavar",
+    "wizardTitle": "Speculative Designer",
+    "avatarRune": "🌊"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "id": "lakshmi-supriya",
+  "url": "https://example.com",
+  "code": "SPHERE-07 // LAKSHMI-SUPRIYA",
+  "title": "LAKSHMI SUPRIYA",
+  "subtitle": "Project title goes here",
+  "year": "2050 CE",
+  "sector": "BIOMETRICS & PERCEPTION",
+  "themeColor": "#b71c1c",
+  "sphere": {
+    "radius": 2.6,
+    "position": [
+      -23,
+      6,
+      8
+    ],
+    "colorPrimary": "#b71c1c",
+    "colorSecondary": "#4a0007",
+    "colorTertiary": "#ff8a80",
+    "fresnelPower": 2.7,
+    "surfaceDistortion": 0.14,
+    "wireColor": "#ef5350",
+    "rings": [
+      {
+        "radius": 4.8,
+        "tube": 0.017,
+        "tiltX": -0.7,
+        "tiltY": 0.5,
+        "tiltZ": -0.3,
+        "speed": -0.002,
+        "hasSatellite": true,
+        "satelliteColor": "#ff8a80"
+      },
+      {
+        "radius": 10.6,
+        "tube": 0.015,
+        "tiltX": 0.6,
+        "tiltY": -0.5,
+        "tiltZ": 0.7,
+        "speed": 0.0022,
+        "hasSatellite": true,
+        "satelliteColor": "#d50000"
+      }
+    ]
+  },
+  "observerFigure": {
+    "stance": "oracle",
+    "quote": "“A one-line description of the project goes here.”",
+    "beaconColor": "#d50000"
+  },
+  "wizardOwner": {
+    "name": "Lakshmi Supriya",
+    "wizardTitle": "Speculative Designer",
+    "avatarRune": "🔊"
+  }
+}

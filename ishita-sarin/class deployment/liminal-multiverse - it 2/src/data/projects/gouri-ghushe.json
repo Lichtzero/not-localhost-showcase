@@ -1,0 +1,56 @@
+{
+  "id": "gouri-ghushe",
+  "url": "https://example.com",
+  "code": "SPHERE-03 // GOURI-GHUSHE",
+  "title": "GOURI GHUSHE",
+  "subtitle": "Project title goes here",
+  "year": "2050 CE",
+  "sector": "PLANETARY ALGORITHMS",
+  "themeColor": "#00c853",
+  "sphere": {
+    "radius": 2.7,
+    "position": [
+      -15,
+      -4,
+      -6
+    ],
+    "colorPrimary": "#00c853",
+    "colorSecondary": "#1b5e20",
+    "colorTertiary": "#ffd600",
+    "fresnelPower": 2.4,
+    "surfaceDistortion": 0.22,
+    "wireColor": "#69f0ae",
+    "rings": [
+      {
+        "radius": 4.9,
+        "tube": 0.02,
+        "tiltX": 0.4,
+        "tiltY": 0.8,
+        "tiltZ": -0.6,
+        "speed": 0.0025,
+        "hasSatellite": true,
+        "satelliteColor": "#ffd600"
+      },
+      {
+        "radius": 10.2,
+        "tube": 0.015,
+        "tiltX": -0.7,
+        "tiltY": 0.3,
+        "tiltZ": 0.5,
+        "speed": -0.002,
+        "hasSatellite": true,
+        "satelliteColor": "#00e676"
+      }
+    ]
+  },
+  "observerFigure": {
+    "stance": "wanderer",
+    "quote": "“A one-line description of the project goes here.”",
+    "beaconColor": "#00e676"
+  },
+  "wizardOwner": {
+    "name": "Gouri Ghushe",
+    "wizardTitle": "Speculative Designer",
+    "avatarRune": "🍄"
+  }
+}
