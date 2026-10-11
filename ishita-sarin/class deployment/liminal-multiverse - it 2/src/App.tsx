@@ -8,8 +8,19 @@ import { INITIAL_PROJECTS, ProjectWorld } from './data/projects';
 import { MultiverseCanvas } from './components/MultiverseCanvas';
 import { MultiverseHUD } from './components/MultiverseHUD';
 import { CreateWorldModal } from './components/CreateWorldModal';
+import { ProjectIndex } from './components/ProjectIndex';
+
+type ViewMode = 'multiverse' | 'index';
+
+// Start on the index if the URL asks for it or the visitor prefers reduced motion
+function getInitialView(): ViewMode {
+  if (window.location.hash === '#index') return 'index';
+  if (window.location.hash === '#multiverse') return 'multiverse';
+  return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'index' : 'multiverse';
+}
 
 export default function App() {
+  const [view, setView] = useState<ViewMode>(getInitialView);
   const [projects, setProjects] = useState<ProjectWorld[]>(INITIAL_PROJECTS);
   const [hoveredProject, setHoveredProject] = useState<ProjectWorld | null>(null);
   const [showOrbits] = useState<boolean>(true);
@@ -17,10 +28,10 @@ export default function App() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
   const [viewResetTrigger, setViewResetTrigger] = useState<number>(0);
 
-  // Select project: send the visitor to the project's own site
+  // Select project: open the project's own site in a new tab
   const handleSelectProject = useCallback((project: ProjectWorld) => {
     if (project.url) {
-      window.location.href = project.url;
+      window.open(project.url, '_blank', 'noopener,noreferrer');
     }
   }, []);
 
@@ -29,10 +40,24 @@ export default function App() {
     setProjects((prev) => [...prev, newWorld]);
   }, []);
 
+  // Switch between the 3D multiverse and the plain project index
+  const showView = useCallback((mode: ViewMode) => {
+    setView(mode);
+    window.history.replaceState(null, '', `#${mode}`);
+  }, []);
+
   // Reset view vantage
   const handleResetView = useCallback(() => {
     setViewResetTrigger((prev) => prev + 1);
   }, []);
+
+  if (view === 'index') {
+    return (
+      <div className="relative w-screen h-screen overflow-hidden bg-[#020205]">
+        <ProjectIndex projects={projects} onOpenMultiverse={() => showView('multiverse')} />
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-[#020205] text-neutral-100 font-mono-code select-none">
@@ -58,6 +83,7 @@ export default function App() {
         hoveredProject={hoveredProject}
         onSelectProject={handleSelectProject}
         onOpenCreateModal={() => setIsCreateModalOpen(true)}
+        onOpenIndex={() => showView('index')}
       />
 
       {/* TRANSMIT NEW SPECULATIVE WORLD MODAL */}

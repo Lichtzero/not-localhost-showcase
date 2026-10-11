@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ProjectWorld } from '../data/projects';
-import { Plus, ArrowRight, Radio, ShieldAlert, Sparkles } from 'lucide-react';
+import { Plus, ArrowRight, Radio, ShieldAlert, Sparkles, List } from 'lucide-react';
 
 interface MultiverseHUDProps {
   projects: ProjectWorld[];
@@ -11,6 +11,7 @@ interface MultiverseHUDProps {
   showStars?: boolean;
   setShowStars?: (show: boolean) => void;
   onOpenCreateModal: () => void;
+  onOpenIndex: () => void;
   onResetView?: () => void;
 }
 
@@ -19,6 +20,7 @@ export const MultiverseHUD: React.FC<MultiverseHUDProps> = ({
   hoveredProject,
   onSelectProject,
   onOpenCreateModal,
+  onOpenIndex,
 }) => {
   const [telemetryTime, setTelemetryTime] = useState('');
   const [randomFrequency, setRandomFrequency] = useState('142.880');
@@ -101,6 +103,16 @@ export const MultiverseHUD: React.FC<MultiverseHUDProps> = ({
             <span className="text-neutral-600">|</span>
             <span className="text-amber-400/90">{randomFrequency} MHz</span>
           </div>
+
+          {/* Switch to the plain, animation-free project index */}
+          <button
+            onClick={onOpenIndex}
+            data-ui-element="true"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs border border-neutral-700 bg-neutral-950/70 text-neutral-200 hover:border-neutral-500 hover:text-white transition-all"
+          >
+            <List className="h-3.5 w-3.5" />
+            <span className="text-[11px] tracking-wider font-semibold uppercase">Index</span>
+          </button>
 
           {/* Add New Speculative World */}
           <button

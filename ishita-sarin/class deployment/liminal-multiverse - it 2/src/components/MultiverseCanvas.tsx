@@ -274,6 +274,91 @@ function buildWizardFigure(beaconColorHex: string, sphereRadius: number, stance:
   return figureGroup;
 }
 
+// FUNCTION: BUILD A CAMERA-FACING NUMBER + SUBTITLE LABEL SHOWN ON THE FACE OF THE SPHERE
+// (the animation loop keeps it on the side of the planet facing the camera)
+function buildPlanetLabel(index: number, project: ProjectWorld) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 1024;
+  const ctx = canvas.getContext('2d')!;
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+
+  const maxWidth = 760;
+  const numberFont = "800 220px 'Orbitron', sans-serif";
+  const subtitleFont = (size: number) => `700 ${size}px 'Chakra Petch', sans-serif`;
+
+  // Greedy word-wrap into at most three lines, shrinking the font until it fits
+  const layoutSubtitle = (text: string) => {
+    for (let size = 96; size >= 40; size -= 4) {
+      ctx.font = subtitleFont(size);
+      const lines: string[] = [];
+      let current = '';
+      for (const word of text.split(' ')) {
+        const attempt = current ? `${current} ${word}` : word;
+        if (ctx.measureText(attempt).width > maxWidth && current) {
+          lines.push(current);
+          current = word;
+        } else {
+          current = attempt;
+        }
+      }
+      if (current) lines.push(current);
+      const fits = lines.every((l) => ctx.measureText(l).width <= maxWidth);
+      if (lines.length <= 3 && fits) return { lines, size };
+    }
+    return { lines: [text], size: 40 };
+  };
+
+  const draw = () => {
+    const cx = canvas.width / 2;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Soft dark backdrop so the text stays readable over the bright planet shading
+    const backdrop = ctx.createRadialGradient(cx, cx, 0, cx, cx, cx);
+    backdrop.addColorStop(0, 'rgba(0, 0, 0, 0.62)');
+    backdrop.addColorStop(0.6, 'rgba(0, 0, 0, 0.45)');
+    backdrop.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = backdrop;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.95)';
+    ctx.shadowBlur = 24;
+
+    const { lines, size } = layoutSubtitle(project.subtitle);
+    const lineHeight = size * 1.15;
+    const numberHeight = 220;
+    const gap = 40;
+    const blockHeight = numberHeight + gap + lines.length * lineHeight;
+    const top = cx - blockHeight / 2;
+
+    ctx.fillStyle = project.sphere.colorTertiary;
+    ctx.font = numberFont;
+    ctx.fillText(String(index + 1), cx, top + numberHeight / 2);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = subtitleFont(size);
+    lines.forEach((line, i) =>
+      ctx.fillText(line, cx, top + numberHeight + gap + lineHeight * (i + 0.5))
+    );
+    texture.needsUpdate = true;
+  };
+
+  draw();
+  // Redraw once the web fonts are available so the canvas doesn't keep the fallback font
+  Promise.all([document.fonts.load(numberFont), document.fonts.load(subtitleFont(96))]).then(draw, () => {});
+
+  const sprite = new THREE.Sprite(
+    new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false })
+  );
+  const size = project.sphere.radius * 1.9;
+  sprite.scale.set(size, size, 1);
+  sprite.renderOrder = 1;
+  return sprite;
+}
+
 export const MultiverseCanvas: React.FC<MultiverseCanvasProps> = ({
   projects,
   activeProjectId,
@@ -292,6 +377,7 @@ export const MultiverseCanvas: React.FC<MultiverseCanvasProps> = ({
     sphereMesh: THREE.Mesh;
     rings: THREE.Group;
     figureGroup: THREE.Group;
+    label: THREE.Sprite;
     satellites: Array<{ mesh: THREE.Mesh; orbitRadius: number; speed: number; angle: number; tiltMatrix: THREE.Matrix4 }>;
     material: THREE.ShaderMaterial;
     project: ProjectWorld;
@@ -501,7 +587,7 @@ export const MultiverseCanvas: React.FC<MultiverseCanvasProps> = ({
     scene.add(grandOrbitsGroup);
 
     // FUNCTION: BUILD PLANET WITH IRIDESCENT SHADER, RINGS, AND SATELLITES
-    function createPlanet(project: ProjectWorld) {
+    function createPlanet(project: ProjectWorld, index: number) {
       const group = new THREE.Group();
       group.position.set(...project.sphere.position);
       group.name = `planet-${project.id}`;
@@ -563,6 +649,10 @@ export const MultiverseCanvas: React.FC<MultiverseCanvasProps> = ({
       );
       group.add(figureGroup);
 
+      // Number + subtitle label on the face of the planet
+      const label = buildPlanetLabel(index, project);
+      group.add(label);
+
       // 3. Delicate Orbital Wire Rings & Satellites (matching Images 2 & 3)
       const ringsGroup = new THREE.Group();
       ringsGroup.name = 'ringsGroup';
@@ -623,6 +713,7 @@ export const MultiverseCanvas: React.FC<MultiverseCanvasProps> = ({
         sphereMesh,
         rings: ringsGroup,
         figureGroup,
+        label,
         satellites: satellitesList,
         material: shaderMat,
         project,
@@ -790,6 +881,13 @@ export const MultiverseCanvas: React.FC<MultiverseCanvasProps> = ({
         const targetHover = isHovered || isActive ? 1.0 : 0.0;
         item.material.uniforms.uHover.value += (targetHover - item.material.uniforms.uHover.value) * 0.1;
 
+        // Keep the label on the camera-facing side of the planet
+        item.label.position
+          .copy(camera.position)
+          .sub(item.group.position)
+          .normalize()
+          .multiplyScalar(item.project.sphere.radius * 1.08);
+
         // Sphere axial slow rotation
         item.sphereMesh.rotation.y += 0.002;
 
@@ -869,7 +967,7 @@ export const MultiverseCanvas: React.FC<MultiverseCanvasProps> = ({
     if (!sceneRef.current) return;
     const scene = sceneRef.current;
 
-    projects.forEach((proj) => {
+    projects.forEach((proj, index) => {
       if (!planetMeshesRef.current.has(proj.id)) {
         // Build new planet on the fly!
         const group = new THREE.Group();
@@ -903,6 +1001,8 @@ export const MultiverseCanvas: React.FC<MultiverseCanvasProps> = ({
           proj.observerFigure.stance
         );
         group.add(figureGroup);
+        const label = buildPlanetLabel(index, proj);
+        group.add(label);
 
         // Rings
         const ringsGroup = new THREE.Group();
@@ -928,6 +1028,7 @@ export const MultiverseCanvas: React.FC<MultiverseCanvasProps> = ({
           sphereMesh,
           rings: ringsGroup,
           figureGroup,
+          label,
           satellites: [],
           material: shaderMat,
           project: proj,
