@@ -742,8 +742,9 @@ export const MultiverseCanvas: React.FC<MultiverseCanvasProps> = ({
         previousMousePosition.current = { x: e.clientX, y: e.clientY };
       }
 
-      // Check hover when not in active project mode
-      if (!activeProjectIdRef.current) {
+      // Check hover when not in active project mode, and not while over UI (hover card, dock, buttons)
+      const overUI = (e.target as HTMLElement)?.closest?.('[data-ui-element="true"]');
+      if (!activeProjectIdRef.current && !overUI) {
         raycaster.setFromCamera(mouse, camera);
         const sphereList = Array.from(planetMeshesRef.current.values()).map((p) => p.sphereMesh);
         const intersects = raycaster.intersectObjects(sphereList, false);

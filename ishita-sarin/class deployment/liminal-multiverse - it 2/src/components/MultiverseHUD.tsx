@@ -1,29 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import { ProjectWorld } from '../data/projects';
-import { Plus, ArrowRight, Radio, ShieldAlert, Sparkles, List } from 'lucide-react';
+import { ArrowUpRight, ArrowUp, Radio, List, X } from 'lucide-react';
+import { ViewSwitcher, ViewMode } from './ViewSwitcher';
+import { SectorFilter, SectorFilterValue, filterBySector } from './SectorFilter';
+import { SiteBrand } from './SiteBrand';
+
+const INDEX_HINT_KEY = 'liminal-index-hint-dismissed';
 
 interface MultiverseHUDProps {
   projects: ProjectWorld[];
   hoveredProject: ProjectWorld | null;
   onSelectProject: (project: ProjectWorld) => void;
-  showOrbits?: boolean;
-  setShowOrbits?: (show: boolean) => void;
-  showStars?: boolean;
-  setShowStars?: (show: boolean) => void;
-  onOpenCreateModal: () => void;
-  onOpenIndex: () => void;
-  onResetView?: () => void;
+  onHoverProject: (project: ProjectWorld | null) => void;
+  sector: SectorFilterValue;
+  onSectorChange: (sector: SectorFilterValue) => void;
+  onChangeView: (view: ViewMode) => void;
 }
 
 export const MultiverseHUD: React.FC<MultiverseHUDProps> = ({
   projects,
   hoveredProject,
   onSelectProject,
-  onOpenCreateModal,
-  onOpenIndex,
+  onHoverProject,
+  sector,
+  onSectorChange,
+  onChangeView,
 }) => {
   const [telemetryTime, setTelemetryTime] = useState('');
   const [randomFrequency, setRandomFrequency] = useState('142.880');
+  const [showIndexHint, setShowIndexHint] = useState(false);
+
+  // Show the "prefer a list?" hint shortly after load, unless this visitor already dismissed it
+  useEffect(() => {
+    let dismissed = false;
+    try {
+      dismissed = localStorage.getItem(INDEX_HINT_KEY) === '1';
+    } catch {}
+    if (dismissed) return;
+    const timer = setTimeout(() => setShowIndexHint(true), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const dismissIndexHint = () => {
+    setShowIndexHint(false);
+    try {
+      localStorage.setItem(INDEX_HINT_KEY, '1');
+    } catch {}
+  };
+
+  // Esc closes the hint
+  useEffect(() => {
+    if (!showIndexHint) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') dismissIndexHint();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [showIndexHint]);
 
   useEffect(() => {
     const updateClock = () => {
@@ -50,262 +83,164 @@ export const MultiverseHUD: React.FC<MultiverseHUDProps> = ({
     return () => clearInterval(freqInterval);
   }, []);
 
-  // Sector filtering & Carousel scroll for 15 planets
-  const [selectedSector, setSelectedSector] = useState<'ALL' | 'BIOMETRICS & PERCEPTION' | 'SYNTHETIC ENTITIES' | 'PLANETARY ALGORITHMS'>('ALL');
+  const filteredProjects = filterBySector(projects, sector);
   const dockScrollRef = React.useRef<HTMLDivElement>(null);
 
-  const filteredProjects = React.useMemo(() => {
-    if (selectedSector === 'ALL') return projects;
-    return projects.filter((p) => p.sector === selectedSector);
-  }, [projects, selectedSector]);
-
   const scrollDock = (direction: 'left' | 'right') => {
-    if (dockScrollRef.current) {
-      const scrollAmt = direction === 'left' ? -260 : 260;
-      dockScrollRef.current.scrollBy({ left: scrollAmt, behavior: 'smooth' });
-    }
+    dockScrollRef.current?.scrollBy({ left: direction === 'left' ? -260 : 260, behavior: 'smooth' });
   };
 
+  const hoveredNumber = hoveredProject ? projects.findIndex((p) => p.id === hoveredProject.id) + 1 : 0;
+
   return (
-    <div className="pointer-events-none absolute inset-0 z-20 flex flex-col justify-between p-6 select-none font-mono-code">
+    <div className="pointer-events-none absolute inset-0 z-20 flex flex-col justify-between p-4 md:p-6 select-none font-mono-code">
       {/* TOP BAR */}
       <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-neutral-800/80 pb-4 backdrop-blur-xs">
-        {/* Collective Branding */}
-        <div className="flex items-center gap-3.5">
-          <div className="relative flex h-11 w-11 items-center justify-center rounded border border-cyan-500/50 bg-neutral-950/90 shadow-[0_0_20px_rgba(0,240,255,0.25)]">
-            <div className="absolute h-2.5 w-2.5 rounded-full bg-cyan-400 animate-ping opacity-80" />
-            <div className="h-1.5 w-1.5 rounded-full bg-cyan-300" />
-            {/* Orbital ring */}
-            <div className="absolute inset-0 rounded-full border border-cyan-400/40 scale-125 animate-spin [animation-duration:12s]" />
-          </div>
+        <SiteBrand />
 
-          <div>
-            <div className="flex items-center gap-2.5 flex-wrap">
-              <h1 className="font-orbitron text-lg md:text-2xl font-black tracking-[0.24em] uppercase text-chromatic-multiverse glow-chromatic-multiverse select-none transition-all">
-                LIMINAL MULTIVERSE
-              </h1>
-              <span className="font-chakra text-[10px] px-2 py-0.5 rounded-full border border-emerald-400/50 text-emerald-300 bg-emerald-950/40 font-bold tracking-widest shadow-[0_0_12px_rgba(0,255,163,0.25)]">
-                OBSERVATORY 2050
-              </span>
-            </div>
-            <p className="font-chakra text-[10px] md:text-[11px] text-neutral-400 tracking-[0.16em] uppercase font-medium mt-0.5">
-              SPECULATIVE DESIGN COLLECTIVE // SURVEILLANCE • SYNTHETIC COGNITION • UNCANNY FUTURES
-            </p>
-          </div>
-        </div>
-
-        {/* Real-time Telemetry & Global Controls */}
-        <div className="flex flex-wrap items-center gap-3 pointer-events-auto">
+        <div className="flex flex-wrap items-center gap-3">
           {/* Telemetry Indicator */}
-          <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded border border-neutral-800 bg-neutral-950/70 text-[11px] text-neutral-400">
+          <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded border border-neutral-800 bg-neutral-950/70 text-[11px] text-neutral-400">
             <Radio className="h-3 w-3 text-cyan-400 animate-pulse" />
             <span>{telemetryTime}</span>
             <span className="text-neutral-600">|</span>
             <span className="text-amber-400/90">{randomFrequency} MHz</span>
           </div>
 
-          {/* Switch to the plain, animation-free project index */}
-          <button
-            onClick={onOpenIndex}
-            data-ui-element="true"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs border border-neutral-700 bg-neutral-950/70 text-neutral-200 hover:border-neutral-500 hover:text-white transition-all"
-          >
-            <List className="h-3.5 w-3.5" />
-            <span className="text-[11px] tracking-wider font-semibold uppercase">Index</span>
-          </button>
+          <div className="relative">
+            <ViewSwitcher view="multiverse" onChange={onChangeView} highlightList={showIndexHint} />
 
-          {/* Add New Speculative World */}
-          <button
-            onClick={onOpenCreateModal}
-            data-ui-element="true"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs border border-cyan-500/50 bg-cyan-950/30 text-cyan-300 hover:bg-cyan-900/50 hover:border-cyan-400 transition-all shadow-[0_0_12px_rgba(6,182,212,0.2)]"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            <span className="text-[11px] tracking-wider font-semibold uppercase">+ TRANSMIT WORLD</span>
-          </button>
+            {/* Hint pointing visitors who'd rather skip the 3D view to the List View button */}
+            {showIndexHint && (
+              <div
+                role="status"
+                data-ui-element="true"
+                className="pointer-events-auto absolute left-0 md:left-auto md:right-0 top-full z-30 mt-4 w-[min(22rem,calc(100vw-2rem))] rounded-xl border border-cyan-500/60 bg-neutral-950/95 p-5 shadow-[0_0_30px_rgba(6,182,212,0.25)] backdrop-blur animate-fade-in"
+              >
+                {/* Pointer notch aimed at the List View button */}
+                <div className="absolute -top-2 left-[164px] md:left-auto md:right-[52px] h-4 w-4 rotate-45 border-l border-t border-cyan-500/60 bg-neutral-950" />
+
+                <button
+                  onClick={dismissIndexHint}
+                  aria-label="Dismiss"
+                  className="absolute right-2 top-2 rounded p-1.5 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-200"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+
+                <div className="flex items-start gap-3 pr-6">
+                  <ArrowUp className="mt-0.5 h-6 w-6 shrink-0 text-cyan-300" />
+                  <div>
+                    <p className="font-chakra text-base font-bold text-white">Don't want the 3D view?</p>
+                    <p className="font-chakra mt-1 text-sm text-neutral-300">
+                      Switch to List View to see every project in a simple list, no animation.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => onChangeView('index')}
+                  className="font-chakra mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-cyan-400 bg-cyan-950/60 px-4 py-2.5 text-sm font-bold uppercase tracking-wider text-cyan-200 hover:bg-cyan-900/60"
+                >
+                  <List className="h-4 w-4" />
+                  Open List View
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
-      {/* CENTER / HOVER CARD: Displays detailed speculative data when hovering a 3D sphere */}
-      <div className="flex-1 flex items-center justify-end pointer-events-none pr-4">
-        {hoveredProject ? (
+      {/* HOVER CARD: details for the planet (or dock entry) under the pointer */}
+      <div className="flex-1 flex items-center justify-end pointer-events-none md:pr-4">
+        {hoveredProject && (
           <div
             data-ui-element="true"
             onClick={() => onSelectProject(hoveredProject)}
-            className="pointer-events-auto cursor-pointer max-w-sm w-full p-5 rounded-lg border border-neutral-700/80 bg-neutral-950/90 shadow-[0_8px_32px_rgba(0,0,0,0.8)] backdrop-blur-md transition-all duration-300 transform translate-y-0 opacity-100 hover:border-cyan-500/80 group"
+            onMouseEnter={() => onHoverProject(hoveredProject)}
+            onMouseLeave={() => onHoverProject(null)}
+            className={`hidden md:block pointer-events-auto max-w-sm w-full p-5 rounded-lg border border-neutral-700/80 bg-neutral-950/90 shadow-[0_8px_32px_rgba(0,0,0,0.8)] backdrop-blur-md transition-colors group ${
+              hoveredProject.url ? 'cursor-pointer hover:border-cyan-500/80' : ''
+            }`}
           >
-            {/* Header / Classification */}
-            <div className="flex items-center justify-between gap-2 border-b border-neutral-800 pb-2.5 mb-3">
-              <span className="text-[10px] tracking-widest text-neutral-400 uppercase">
-                {hoveredProject.code}
+            <div className="flex items-start gap-3">
+              <span className="font-orbitron text-3xl font-black leading-none" style={{ color: hoveredProject.themeColor }}>
+                {hoveredNumber}
               </span>
-              <span
-                className="text-[9px] px-2 py-0.5 rounded font-mono font-bold tracking-wider"
-                style={{
-                  backgroundColor: `${hoveredProject.themeColor}22`,
-                  color: hoveredProject.themeColor,
-                  border: `1px solid ${hoveredProject.themeColor}66`,
-                }}
-              >
-                {hoveredProject.year}
-              </span>
-            </div>
-
-            {/* Title & Subtitle */}
-            <h2 className="font-orbitron text-lg font-bold tracking-wider text-white mb-1 group-hover:text-cyan-300 transition-colors uppercase">
-              {hoveredProject.title}
-            </h2>
-            <p className="text-xs text-neutral-300 mb-3 leading-relaxed font-sans">
-              {hoveredProject.subtitle}
-            </p>
-
-            {/* Wizard Project Owner Status Banner */}
-            <div className="p-2.5 rounded bg-neutral-900/90 border border-amber-500/40 mb-3 flex items-start gap-2.5">
-              <span className="text-xl shrink-0 select-none mt-0.5">
-                {hoveredProject.wizardOwner?.avatarRune || '🔮'}
-              </span>
-              <div>
-                <div className="font-chakra text-[10px] font-bold tracking-wider uppercase text-amber-300 flex items-center gap-1.5">
-                  <Sparkles className="h-2.5 w-2.5" />
-                  <span>PROJECT OWNER // {hoveredProject.wizardOwner?.name}</span>
-                </div>
-                <div className="text-[10px] text-neutral-300 font-mono">
-                  {hoveredProject.wizardOwner?.wizardTitle}
-                </div>
+              <div className="min-w-0">
+                <h2 className="font-chakra text-lg font-bold leading-snug text-white">{hoveredProject.subtitle}</h2>
+                <p className="font-chakra mt-1 text-xs uppercase tracking-wider text-neutral-400">
+                  {hoveredProject.wizardOwner.avatarRune} {hoveredProject.wizardOwner.name}
+                </p>
               </div>
             </div>
 
-            {/* Observer Quote */}
-            <p className="text-[11px] italic text-neutral-400/90 mb-4 border-l-2 border-amber-500/70 pl-2.5 leading-snug">
+            <p className="font-chakra mt-3 text-[11px] uppercase tracking-wider text-neutral-500">
+              {hoveredProject.sector} · {hoveredProject.year}
+            </p>
+
+            <p className="mt-3 text-xs italic leading-snug text-neutral-300 border-l-2 border-neutral-700 pl-2.5">
               {hoveredProject.observerFigure.quote}
             </p>
 
-            {/* Action Callout */}
-            <div className="flex items-center justify-between pt-2 border-t border-neutral-800/80 text-xs">
-              <span className="font-chakra text-[10px] text-neutral-400 uppercase tracking-widest">
-                EXTERNAL LINK
-              </span>
-              <span className="font-chakra flex items-center gap-1.5 text-amber-300 font-bold text-[11px] tracking-wider group-hover:translate-x-1 transition-transform uppercase">
-                {hoveredProject.url ? (
-                  <>
-                    VISIT PROJECT <ArrowRight className="h-3 w-3" />
-                  </>
-                ) : (
-                  'LINK COMING SOON'
-                )}
-              </span>
+            <div className="font-chakra mt-4 flex items-center gap-1.5 border-t border-neutral-800/80 pt-3 text-xs font-bold uppercase tracking-wider">
+              {hoveredProject.url ? (
+                <span className="flex items-center gap-1.5 text-cyan-300">
+                  Visit project <ArrowUpRight className="h-3.5 w-3.5" />
+                </span>
+              ) : (
+                <span className="text-neutral-500">Link coming soon</span>
+              )}
             </div>
-          </div>
-        ) : (
-          <div className="hidden md:flex flex-col items-end text-neutral-500 text-[11px] tracking-widest space-y-1">
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-              <span className="font-chakra uppercase">SPATIAL NAVIGATION ACTIVE</span>
-            </div>
-            <p className="font-mono text-[10px] text-neutral-500">
-              DRAG TO ORBIT // WHEEL TO ZOOM // CLICK ANY CELESTIAL BODY TO VISIT
-            </p>
           </div>
         )}
       </div>
 
-      {/* BOTTOM FOOTER & PLANET QUICK-SELECT DOCK */}
+      {/* BOTTOM: controls hint, category filter and project quick-select dock */}
       <footer className="border-t border-neutral-800/80 pt-3 flex flex-col gap-2.5 backdrop-blur-xs">
-        {/* Top dock controls: Instructions + Sector Category Tabs */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-[11px]">
-          <div className="flex items-center gap-3 text-neutral-400">
-            <span className="font-chakra px-2.5 py-0.5 rounded-full border border-neutral-800 bg-neutral-950/80 text-neutral-300 uppercase tracking-wider font-semibold">
-              DESKTOP OBSERVATORY
-            </span>
-            <span className="hidden sm:inline text-neutral-600">•</span>
-            <span className="hidden sm:inline text-neutral-400 font-chakra uppercase tracking-wider">
-              {projects.length} WORLDS ANCHORED
-            </span>
-          </div>
-
-          {/* Sector Category Filter Tabs */}
-          <div className="flex items-center gap-1.5 pointer-events-auto flex-wrap">
-            <button
-              onClick={() => setSelectedSector('ALL')}
-              data-ui-element="true"
-              className={`font-chakra px-2.5 py-1 rounded text-[10px] tracking-wider uppercase font-semibold transition-all border ${
-                selectedSector === 'ALL'
-                  ? 'border-cyan-400 bg-cyan-950/50 text-cyan-300 shadow-[0_0_10px_rgba(0,240,255,0.2)]'
-                  : 'border-neutral-800 bg-neutral-950/70 text-neutral-400 hover:text-white'
-              }`}
-            >
-              ALL [{projects.length}]
-            </button>
-            <button
-              onClick={() => setSelectedSector('BIOMETRICS & PERCEPTION')}
-              data-ui-element="true"
-              className={`font-chakra px-2.5 py-1 rounded text-[10px] tracking-wider uppercase font-semibold transition-all border ${
-                selectedSector === 'BIOMETRICS & PERCEPTION'
-                  ? 'border-amber-400 bg-amber-950/50 text-amber-300 shadow-[0_0_10px_rgba(255,184,0,0.2)]'
-                  : 'border-neutral-800 bg-neutral-950/70 text-neutral-400 hover:text-white'
-              }`}
-            >
-              BIOMETRICS & PERCEPTION [{projects.filter((p) => p.sector === 'BIOMETRICS & PERCEPTION').length}]
-            </button>
-            <button
-              onClick={() => setSelectedSector('SYNTHETIC ENTITIES')}
-              data-ui-element="true"
-              className={`font-chakra px-2.5 py-1 rounded text-[10px] tracking-wider uppercase font-semibold transition-all border ${
-                selectedSector === 'SYNTHETIC ENTITIES'
-                  ? 'border-purple-400 bg-purple-950/50 text-purple-300 shadow-[0_0_10px_rgba(168,85,247,0.2)]'
-                  : 'border-neutral-800 bg-neutral-950/70 text-neutral-400 hover:text-white'
-              }`}
-            >
-              SYNTHETIC ENTITIES [{projects.filter((p) => p.sector === 'SYNTHETIC ENTITIES').length}]
-            </button>
-            <button
-              onClick={() => setSelectedSector('PLANETARY ALGORITHMS')}
-              data-ui-element="true"
-              className={`font-chakra px-2.5 py-1 rounded text-[10px] tracking-wider uppercase font-semibold transition-all border ${
-                selectedSector === 'PLANETARY ALGORITHMS'
-                  ? 'border-emerald-400 bg-emerald-950/50 text-emerald-300 shadow-[0_0_10px_rgba(0,255,163,0.2)]'
-                  : 'border-neutral-800 bg-neutral-950/70 text-neutral-400 hover:text-white'
-              }`}
-            >
-              PLANETARY ALGORITHMS [{projects.filter((p) => p.sector === 'PLANETARY ALGORITHMS').length}]
-            </button>
-          </div>
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-2.5">
+          <p className="font-chakra text-[11px] uppercase tracking-wider text-neutral-400">
+            {projects.length} projects
+            <span className="hidden md:inline"> · Drag to rotate · Scroll to zoom · Click a planet to open it</span>
+            <span className="md:hidden"> · Drag to rotate · Tap a planet to open it</span>
+          </p>
+          <SectorFilter projects={projects} value={sector} onChange={onSectorChange} />
         </div>
 
-        {/* Planet Quick-Select Selector Carousel */}
         <div className="relative flex items-center pointer-events-auto">
           <button
             onClick={() => scrollDock('left')}
             data-ui-element="true"
-            className="hidden sm:flex shrink-0 items-center justify-center w-7 h-8 rounded border border-neutral-800 bg-neutral-950/90 text-neutral-400 hover:text-white hover:border-cyan-400 transition-all mr-1.5"
-            title="Scroll left"
+            aria-label="Scroll project list left"
+            className="hidden sm:flex shrink-0 items-center justify-center w-7 h-8 rounded border border-neutral-800 bg-neutral-950/90 text-neutral-400 hover:text-white hover:border-cyan-400 transition-colors mr-1.5"
           >
             ‹
           </button>
 
-          <div
-            ref={dockScrollRef}
-            className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1 w-full"
-            style={{ scrollBehavior: 'smooth' }}
-          >
+          <div ref={dockScrollRef} className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1 w-full">
             {filteredProjects.map((proj) => {
-              const globalIdx = projects.findIndex((p) => p.id === proj.id);
+              const number = projects.findIndex((p) => p.id === proj.id) + 1;
+              const isHovered = hoveredProject?.id === proj.id;
               return (
                 <button
                   key={proj.id}
                   onClick={() => onSelectProject(proj)}
+                  onMouseEnter={() => onHoverProject(proj)}
+                  onMouseLeave={() => onHoverProject(null)}
+                  onFocus={() => onHoverProject(proj)}
+                  onBlur={() => onHoverProject(null)}
                   data-ui-element="true"
-                  className="group shrink-0 flex items-center gap-2 px-3 py-1.5 rounded-full border border-neutral-800 bg-neutral-950/90 hover:border-cyan-400 hover:bg-neutral-900/90 text-neutral-300 hover:text-white transition-all text-xs shadow-xs"
+                  title={`${proj.subtitle} — ${proj.wizardOwner.name}`}
+                  className={`group shrink-0 flex items-center gap-2 px-3 py-1.5 rounded-full border bg-neutral-950/90 transition-colors text-xs ${
+                    isHovered ? 'border-cyan-400 text-white' : 'border-neutral-800 text-neutral-300 hover:text-white'
+                  }`}
                 >
-                  <span
-                    className="w-2 h-2 rounded-full group-hover:scale-125 transition-transform"
-                    style={{ backgroundColor: proj.themeColor }}
-                  />
-                  <span className="font-orbitron text-[10px] text-neutral-400 group-hover:text-cyan-400 font-bold">
-                    {String(globalIdx + 1).padStart(2, '0')}
+                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: proj.themeColor }} />
+                  <span className="font-orbitron text-[10px] font-bold text-neutral-400 group-hover:text-cyan-400">
+                    {number}
                   </span>
                   <span className="font-chakra text-[11px] tracking-wider uppercase font-semibold whitespace-nowrap">
-                    {proj.title}
+                    {proj.wizardOwner.name}
                   </span>
                 </button>
               );
@@ -315,8 +250,8 @@ export const MultiverseHUD: React.FC<MultiverseHUDProps> = ({
           <button
             onClick={() => scrollDock('right')}
             data-ui-element="true"
-            className="hidden sm:flex shrink-0 items-center justify-center w-7 h-8 rounded border border-neutral-800 bg-neutral-950/90 text-neutral-400 hover:text-white hover:border-cyan-400 transition-all ml-1.5"
-            title="Scroll right"
+            aria-label="Scroll project list right"
+            className="hidden sm:flex shrink-0 items-center justify-center w-7 h-8 rounded border border-neutral-800 bg-neutral-950/90 text-neutral-400 hover:text-white hover:border-cyan-400 transition-colors ml-1.5"
           >
             ›
           </button>
