@@ -1,0 +1,22 @@
+{
+  "name": "student-spatial-gallery",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "An experimental interactive spatial gallery showcasing 13 student projects",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "student-showcase",
+    "spatial-gallery",
+    "interactive",
+    "portfolio"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "sharp": "^0.35.5"
+  }
+}

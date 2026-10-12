@@ -1,0 +1,56 @@
+{
+  "id": "urvi-khadakban",
+  "url": "https://example.com",
+  "code": "SPHERE-15 // URVI-KHADAKBAN",
+  "title": "URVI KHADAKBAN",
+  "subtitle": "Project title goes here",
+  "year": "2050 CE",
+  "sector": "PLANETARY ALGORITHMS",
+  "themeColor": "#40c4ff",
+  "sphere": {
+    "radius": 2.6,
+    "position": [
+      30,
+      -12,
+      22
+    ],
+    "colorPrimary": "#40c4ff",
+    "colorSecondary": "#01579b",
+    "colorTertiary": "#b2ff59",
+    "fresnelPower": 2.8,
+    "surfaceDistortion": 0.12,
+    "wireColor": "#80d8ff",
+    "rings": [
+      {
+        "radius": 4.6,
+        "tube": 0.018,
+        "tiltX": 1.2,
+        "tiltY": -0.4,
+        "tiltZ": 0.5,
+        "speed": 0.002,
+        "hasSatellite": true,
+        "satelliteColor": "#b2ff59"
+      },
+      {
+        "radius": 9.8,
+        "tube": 0.015,
+        "tiltX": -0.6,
+        "tiltY": 0.8,
+        "tiltZ": -0.3,
+        "speed": -0.0022,
+        "hasSatellite": true,
+        "satelliteColor": "#01579b"
+      }
+    ]
+  },
+  "observerFigure": {
+    "stance": "oracle",
+    "quote": "“A one-line description of the project goes here.”",
+    "beaconColor": "#40c4ff"
+  },
+  "wizardOwner": {
+    "name": "Urvi Khadakban",
+    "wizardTitle": "Speculative Designer",
+    "avatarRune": "🌊"
+  }
+}

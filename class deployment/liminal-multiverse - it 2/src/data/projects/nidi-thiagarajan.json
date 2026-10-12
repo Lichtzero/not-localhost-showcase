@@ -1,0 +1,56 @@
+{
+  "id": "nidi-thiagarajan",
+  "url": "https://example.com",
+  "code": "SPHERE-11 // NIDI-THIAGARAJAN",
+  "title": "NIDI THIAGARAJAN",
+  "subtitle": "Project title goes here",
+  "year": "2050 CE",
+  "sector": "SYNTHETIC ENTITIES",
+  "themeColor": "#7c4dff",
+  "sphere": {
+    "radius": 2.6,
+    "position": [
+      33,
+      7,
+      -14
+    ],
+    "colorPrimary": "#7c4dff",
+    "colorSecondary": "#512da8",
+    "colorTertiary": "#ffd700",
+    "fresnelPower": 2.8,
+    "surfaceDistortion": 0.13,
+    "wireColor": "#d1c4e9",
+    "rings": [
+      {
+        "radius": 4.7,
+        "tube": 0.018,
+        "tiltX": 0.8,
+        "tiltY": 0.3,
+        "tiltZ": 0.4,
+        "speed": 0.0016,
+        "hasSatellite": true,
+        "satelliteColor": "#ffd700"
+      },
+      {
+        "radius": 10.6,
+        "tube": 0.015,
+        "tiltX": -0.5,
+        "tiltY": 0.7,
+        "tiltZ": -0.5,
+        "speed": -0.002,
+        "hasSatellite": true,
+        "satelliteColor": "#b388ff"
+      }
+    ]
+  },
+  "observerFigure": {
+    "stance": "oracle",
+    "quote": "“A one-line description of the project goes here.”",
+    "beaconColor": "#b388ff"
+  },
+  "wizardOwner": {
+    "name": "Nidi Thiagarajan",
+    "wizardTitle": "Speculative Designer",
+    "avatarRune": "⛩️"
+  }
+}

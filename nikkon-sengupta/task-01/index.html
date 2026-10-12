@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Living Woodland Realm — 13 Interactive Project Landmarks</title>
+  <meta name="description" content="An interactive illustrated fantasy game world featuring 13 unique student project landmarks. Explore lush forests, waterfalls, bridges, treehouses, caves, and cottages with smooth pan and zoom.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Fullscreen Explorable Game Viewport -->
+  <main class="game-viewport" role="main" aria-label="Interactive Illustrated Fantasy Game World">
+
+    <!-- The Movable World Stage (Hardware Accelerated Pan & Zoom) -->
+    <div class="world-stage" id="world-stage">
+
+      <!-- 1. The High-Resolution Hand-Painted 2D World Map -->
+      <img 
+        src="public/images/fantasy_world_map_2x.jpg" 
+        onerror="this.src='public/images/fantasy_world_map.jpg'" 
+        alt="Illustrated Fantasy Game World Map" 
+        class="world-map-image" 
+        draggable="false" 
+      />
+
+      <!-- 2. Living Environmental Canvas (Water Currents, Cascades, Swimming Fish, Butterflies, Particles) -->
+      <canvas id="ambient-life-canvas" class="ambient-life-canvas" aria-hidden="true"></canvas>
+
+      <!-- 3. Soft Atmospheric Sunbeams & Vignette Lighting -->
+      <div class="world-atmosphere" aria-hidden="true"></div>
+
+      <!-- 4. 13 Interactive Environmental Landmarks (Treehouses, Caves, Watermills, Bridges, Cottages) -->
+      <div class="landmarks-layer" id="landmarks-layer"></div>
+
+    </div>
+
+    <!-- Thematic Game World HUD (Top Bar) -->
+    <header class="game-hud" role="banner">
+      <div class="hud-left">
+        <div class="hud-brand">
+          <span class="hud-emblem" aria-hidden="true">🍃</span>
+          <span class="hud-title">Living Woodland Realm</span>
+          <span class="hud-badge">13 Landmarks</span>
+        </div>
+
+        <button id="btn-directory-toggle" class="hud-btn" type="button" aria-label="Open project landmarks directory">
+          <span aria-hidden="true">📜</span>
+          <span>Landmark Index</span>
+        </button>
+      </div>
+
+      <div class="hud-right">
+        <button id="sound-toggle-btn" class="hud-btn" type="button" aria-label="Toggle ambient forest stream and audio">
+          <span class="btn-icon" aria-hidden="true">🔊</span>
+          <span class="btn-text">Sound On</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Quick-Travel Landmark Directory Drawer -->
+    <aside class="directory-drawer" id="directory-drawer" aria-label="Landmarks Quick Travel Index">
+      <div class="drawer-header">
+        <span class="drawer-title">
+          <span aria-hidden="true">🗺️</span>
+          <span>13 Project Locations</span>
+        </span>
+        <button class="drawer-close" id="drawer-close" type="button" aria-label="Close directory">&times;</button>
+      </div>
+      <div class="drawer-list" id="drawer-list"></div>
+    </aside>
+
+    <!-- Minimap & Camera Radar (Bottom Right) -->
+    <aside class="minimap-container" aria-label="World Map Navigation Controls">
+      <div class="minimap-card" id="minimap-card" title="Click anywhere on the minimap to pan there">
+        <img src="public/images/fantasy_world_map.jpg" alt="Minimap Overview" class="minimap-thumb" draggable="false" />
+        <div class="minimap-viewport-box" id="minimap-viewport-box" aria-hidden="true"></div>
+      </div>
+
+      <div class="minimap-controls">
+        <button id="btn-zoom-in" class="minimap-btn" type="button" title="Zoom In" aria-label="Zoom In">+</button>
+        <button id="btn-zoom-out" class="minimap-btn" type="button" title="Zoom Out" aria-label="Zoom Out">&minus;</button>
+        <button id="btn-recenter" class="minimap-btn" type="button" title="Recenter World Map" aria-label="Recenter Camera">&#x21bb;</button>
+      </div>
+    </aside>
+
+    <!-- Navigation Exploration Pill (Bottom Center) -->
+    <div class="game-bottom-bar" aria-hidden="true">
+      <div class="hint-pill">
+        <span class="hint-dot"></span>
+        <span>Drag to pan world &bull; Scroll to zoom &bull; Click any landmark to enter</span>
+      </div>
+    </div>
+
+    <!-- Screen Warp Transition Overlay -->
+    <div class="warp-overlay" id="warp-overlay" aria-hidden="true"></div>
+
+  </main>
+
+  <!-- Centralized Project Data Store (100% standalone, works on file:// and http://) -->
+  <script src="data/projects.js"></script>
+
+  <!-- Interactive Fantasy Game World Engine -->
+  <script src="js/game-world.js"></script>
+</body>
+</html>

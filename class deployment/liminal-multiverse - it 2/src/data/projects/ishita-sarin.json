@@ -1,0 +1,56 @@
+{
+  "id": "ishita-sarin",
+  "url": "https://benevolent-malabi-99261a.netlify.app",
+  "code": "SPHERE-06 // ISHITA-SARIN",
+  "title": "ISHITA SARIN",
+  "subtitle": "Memory_capsulation",
+  "year": "2050 CE",
+  "sector": "PLANETARY ALGORITHMS",
+  "themeColor": "#c2185b",
+  "sphere": {
+    "radius": 2.7,
+    "position": [
+      24,
+      3,
+      4
+    ],
+    "colorPrimary": "#c2185b",
+    "colorSecondary": "#880e4f",
+    "colorTertiary": "#00ffff",
+    "fresnelPower": 2.5,
+    "surfaceDistortion": 0.16,
+    "wireColor": "#ff4081",
+    "rings": [
+      {
+        "radius": 4.7,
+        "tube": 0.019,
+        "tiltX": 0.5,
+        "tiltY": -0.6,
+        "tiltZ": 0.4,
+        "speed": 0.0022,
+        "hasSatellite": true,
+        "satelliteColor": "#00ffff"
+      },
+      {
+        "radius": 10.8,
+        "tube": 0.015,
+        "tiltX": -0.7,
+        "tiltY": 0.4,
+        "tiltZ": -0.5,
+        "speed": -0.002,
+        "hasSatellite": true,
+        "satelliteColor": "#ff007f"
+      }
+    ]
+  },
+  "observerFigure": {
+    "stance": "surveyor",
+    "quote": "“A one-line description of the project goes here.”",
+    "beaconColor": "#ff007f"
+  },
+  "wizardOwner": {
+    "name": "Ishita Sarin",
+    "wizardTitle": "Speculative Designer",
+    "avatarRune": "🧠"
+  }
+}

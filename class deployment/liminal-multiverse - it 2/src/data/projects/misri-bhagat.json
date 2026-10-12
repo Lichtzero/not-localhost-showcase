@@ -1,0 +1,56 @@
+{
+  "id": "misri-bhagat",
+  "url": "https://example.com",
+  "code": "SPHERE-09 // MISRI-BHAGAT",
+  "title": "MISRI BHAGAT",
+  "subtitle": "Project title goes here",
+  "year": "2050 CE",
+  "sector": "PLANETARY ALGORITHMS",
+  "themeColor": "#e65100",
+  "sphere": {
+    "radius": 2.5,
+    "position": [
+      18,
+      -6,
+      -18
+    ],
+    "colorPrimary": "#e65100",
+    "colorSecondary": "#bf360c",
+    "colorTertiary": "#ffd54f",
+    "fresnelPower": 2.3,
+    "surfaceDistortion": 0.17,
+    "wireColor": "#ff9e80",
+    "rings": [
+      {
+        "radius": 4.6,
+        "tube": 0.018,
+        "tiltX": -0.5,
+        "tiltY": 0.7,
+        "tiltZ": 0.8,
+        "speed": 0.003,
+        "hasSatellite": true,
+        "satelliteColor": "#ffd54f"
+      },
+      {
+        "radius": 10.4,
+        "tube": 0.015,
+        "tiltX": 0.8,
+        "tiltY": -0.4,
+        "tiltZ": 0.6,
+        "speed": -0.0022,
+        "hasSatellite": true,
+        "satelliteColor": "#ff6d00"
+      }
+    ]
+  },
+  "observerFigure": {
+    "stance": "sentinel",
+    "quote": "“A one-line description of the project goes here.”",
+    "beaconColor": "#ff6d00"
+  },
+  "wizardOwner": {
+    "name": "Misri Bhagat",
+    "wizardTitle": "Speculative Designer",
+    "avatarRune": "⏳"
+  }
+}

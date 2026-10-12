@@ -1,0 +1,56 @@
+{
+  "id": "moulik-nanda",
+  "url": "https://example.com",
+  "code": "SPHERE-10 // MOULIK-NANDA",
+  "title": "MOULIK NANDA",
+  "subtitle": "Project title goes here",
+  "year": "2050 CE",
+  "sector": "BIOMETRICS & PERCEPTION",
+  "themeColor": "#64dd17",
+  "sphere": {
+    "radius": 2.8,
+    "position": [
+      -8,
+      12,
+      -22
+    ],
+    "colorPrimary": "#64dd17",
+    "colorSecondary": "#33691e",
+    "colorTertiary": "#00e5ff",
+    "fresnelPower": 2.6,
+    "surfaceDistortion": 0.23,
+    "wireColor": "#b2ff59",
+    "rings": [
+      {
+        "radius": 4.9,
+        "tube": 0.02,
+        "tiltX": 0.6,
+        "tiltY": 0.4,
+        "tiltZ": -0.5,
+        "speed": 0.002,
+        "hasSatellite": true,
+        "satelliteColor": "#00e5ff"
+      },
+      {
+        "radius": 10.9,
+        "tube": 0.015,
+        "tiltX": -0.7,
+        "tiltY": 0.6,
+        "tiltZ": 0.4,
+        "speed": -0.0021,
+        "hasSatellite": true,
+        "satelliteColor": "#76ff03"
+      }
+    ]
+  },
+  "observerFigure": {
+    "stance": "wanderer",
+    "quote": "“A one-line description of the project goes here.”",
+    "beaconColor": "#76ff03"
+  },
+  "wizardOwner": {
+    "name": "Moulik Nanda",
+    "wizardTitle": "Speculative Designer",
+    "avatarRune": "🦌"
+  }
+}

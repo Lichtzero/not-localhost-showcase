@@ -1,0 +1,56 @@
+{
+  "id": "rajatkumar-shahare",
+  "url": "https://example.com",
+  "code": "SPHERE-13 // RAJATKUMAR-SHAHARE",
+  "title": "RAJATKUMAR SHAHARE",
+  "subtitle": "Project title goes here",
+  "year": "2050 CE",
+  "sector": "BIOMETRICS & PERCEPTION",
+  "themeColor": "#455a64",
+  "sphere": {
+    "radius": 2.8,
+    "position": [
+      6,
+      14,
+      30
+    ],
+    "colorPrimary": "#455a64",
+    "colorSecondary": "#263238",
+    "colorTertiary": "#00ffd5",
+    "fresnelPower": 2.3,
+    "surfaceDistortion": 0.18,
+    "wireColor": "#cfd8dc",
+    "rings": [
+      {
+        "radius": 4.9,
+        "tube": 0.021,
+        "tiltX": 0.7,
+        "tiltY": -0.5,
+        "tiltZ": 0.4,
+        "speed": -0.0022,
+        "hasSatellite": true,
+        "satelliteColor": "#00ffd5"
+      },
+      {
+        "radius": 10.7,
+        "tube": 0.015,
+        "tiltX": -0.6,
+        "tiltY": 0.8,
+        "tiltZ": -0.4,
+        "speed": 0.002,
+        "hasSatellite": true,
+        "satelliteColor": "#90a4ae"
+      }
+    ]
+  },
+  "observerFigure": {
+    "stance": "sentinel",
+    "quote": "“A one-line description of the project goes here.”",
+    "beaconColor": "#90a4ae"
+  },
+  "wizardOwner": {
+    "name": "Rajatkumar Shahare",
+    "wizardTitle": "Speculative Designer",
+    "avatarRune": "🪞"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "id": "haniya-hasim",
+  "url": "https://example.com",
+  "code": "SPHERE-04 // HANIYA-HASIM",
+  "title": "HANIYA HASIM",
+  "subtitle": "Project title goes here",
+  "year": "2050 CE",
+  "sector": "BIOMETRICS & PERCEPTION",
+  "themeColor": "#0288d1",
+  "sphere": {
+    "radius": 2.5,
+    "position": [
+      -6,
+      8,
+      13
+    ],
+    "colorPrimary": "#0288d1",
+    "colorSecondary": "#01579b",
+    "colorTertiary": "#ff4081",
+    "fresnelPower": 2.1,
+    "surfaceDistortion": 0.15,
+    "wireColor": "#4fc3f7",
+    "rings": [
+      {
+        "radius": 4.5,
+        "tube": 0.02,
+        "tiltX": 0.9,
+        "tiltY": 0.3,
+        "tiltZ": 0.7,
+        "speed": -0.002,
+        "hasSatellite": true,
+        "satelliteColor": "#ff4081"
+      },
+      {
+        "radius": 10.4,
+        "tube": 0.015,
+        "tiltX": -0.5,
+        "tiltY": 0.8,
+        "tiltZ": -0.4,
+        "speed": 0.0024,
+        "hasSatellite": true,
+        "satelliteColor": "#00e5ff"
+      }
+    ]
+  },
+  "observerFigure": {
+    "stance": "oracle",
+    "quote": "“A one-line description of the project goes here.”",
+    "beaconColor": "#00b0ff"
+  },
+  "wizardOwner": {
+    "name": "Haniya Hasim",
+    "wizardTitle": "Speculative Designer",
+    "avatarRune": "📜"
+  }
+}
