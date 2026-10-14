@@ -1,11 +1,9 @@
 {
   "id": "misri-bhagat",
-  "url": "https://example.com",
-  "code": "SPHERE-09 // MISRI-BHAGAT",
-  "title": "MISRI BHAGAT",
-  "subtitle": "Project title goes here",
-  "year": "2050 CE",
-  "sector": "PLANETARY ALGORITHMS",
+  "url": "https://distraction-hook.vercel.app/",
+  "subtitle": "Distraction Hook",
+  "year": "2026 CE",
+  "sector": "BIOMETRICS & PERCEPTION",
   "themeColor": "#e65100",
   "sphere": {
     "radius": 2.5,
@@ -45,12 +43,12 @@
   },
   "observerFigure": {
     "stance": "sentinel",
-    "quote": "“A one-line description of the project goes here.”",
+    "quote": "A phone stand that responds to notification sounds with light and sound, making distraction easier to notice.",
     "beaconColor": "#ff6d00"
   },
   "wizardOwner": {
     "name": "Misri Bhagat",
     "wizardTitle": "Speculative Designer",
-    "avatarRune": "⏳"
+    "avatarRune": "📳"
   }
 }

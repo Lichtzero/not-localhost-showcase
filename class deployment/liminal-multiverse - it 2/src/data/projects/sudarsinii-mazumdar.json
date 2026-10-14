@@ -1,10 +1,10 @@
 {
   "id": "sudarsinii-mazumdar",
-  "url": "https://example.com",
+  "url": "https://sudarsinii-portfolio.vercel.app/",
   "code": "SPHERE-14 // SUDARSINII-MAZUMDAR",
   "title": "SUDARSINII MAZUMDAR",
-  "subtitle": "Project title goes here",
-  "year": "2050 CE",
+  "subtitle": "Curiosity Cabinet",
+  "year": "2026",
   "sector": "SYNTHETIC ENTITIES",
   "themeColor": "#ff4081",
   "sphere": {
@@ -45,7 +45,7 @@
   },
   "observerFigure": {
     "stance": "wanderer",
-    "quote": "“A one-line description of the project goes here.”",
+    "quote": "“Curiosity Cabinet is an interactive portfolio that turns a collection of experience design projects into an atmospheric cabinet to explore.”",
     "beaconColor": "#ff4081"
   },
   "wizardOwner": {

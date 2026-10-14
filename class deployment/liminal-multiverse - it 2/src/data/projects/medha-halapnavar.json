@@ -1,11 +1,11 @@
 {
   "id": "medha-halapnavar",
-  "url": "https://example.com",
+  "url": "https://imedhit.github.io/Lingusitic-Afterimage/",
   "code": "SPHERE-08 // MEDHA-HALAPNAVAR",
   "title": "MEDHA HALAPNAVAR",
-  "subtitle": "Project title goes here",
-  "year": "2050 CE",
-  "sector": "SYNTHETIC ENTITIES",
+  "subtitle": "Linguistic Afterimage",
+  "year": "2026-2050",
+  "sector": "SURVEILLANCE",
   "themeColor": "#0d47a1",
   "sphere": {
     "radius": 2.7,
@@ -45,12 +45,12 @@
   },
   "observerFigure": {
     "stance": "monolith",
-    "quote": "“A one-line description of the project goes here.”",
+    "quote": "“Shifts in Bengaluru's lingustic patterns in the age of AI, visualised as spatial data.”",
     "beaconColor": "#2979ff"
   },
   "wizardOwner": {
     "name": "Medha Halapnavar",
     "wizardTitle": "Speculative Designer",
-    "avatarRune": "🌊"
+    "avatarRune": "👾"
   }
 }
