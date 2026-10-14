@@ -1,2 +1,2 @@
-Incubation Cafe - MDes Year 2 showcase website
+
 https://neurowalk.netlify.app
