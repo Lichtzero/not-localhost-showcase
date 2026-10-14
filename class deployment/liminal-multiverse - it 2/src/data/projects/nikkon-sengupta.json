@@ -1,10 +1,10 @@
 {
   "id": "nikkon-sengupta",
-  "url": "https://example.com",
+  "url": "https://itsniko18.github.io/The-Scribbler/",
   "code": "SPHERE-12 // NIKKON-SENGUPTA",
   "title": "NIKKON SENGUPTA",
-  "subtitle": "Project title goes here",
-  "year": "2050 CE",
+  "subtitle": "The Scribbler",
+  "year": "2500 CE",
   "sector": "PLANETARY ALGORITHMS",
   "themeColor": "#00bfa5",
   "sphere": {
@@ -45,12 +45,12 @@
   },
   "observerFigure": {
     "stance": "surveyor",
-    "quote": "“A one-line description of the project goes here.”",
+    "quote": "“The Scribbler is designed to practice steganography to rebel against AI. The device is portable and designed to send messages as glitches in the form of language and translate cursive into ‘readable’ material.”",
     "beaconColor": "#1de9b6"
   },
   "wizardOwner": {
     "name": "Nikkon Sengupta",
     "wizardTitle": "Speculative Designer",
-    "avatarRune": "☁️"
+    "avatarRune": "✒️"
   }
 }
