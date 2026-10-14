@@ -1,0 +1,56 @@
+$port = 8080
+$prefix = "http://localhost:$port/"
+$folder = Split-Path -Parent $MyInvocation.MyCommand.Definition
+
+$listener = New-Object System.Net.HttpListener
+$listener.Prefixes.Add($prefix)
+try {
+    $listener.Start()
+    Write-Host "Server running at $prefix"
+} catch {
+    $port = 5500
+    $prefix = "http://localhost:$port/"
+    $listener = New-Object System.Net.HttpListener
+    $listener.Prefixes.Add($prefix)
+    $listener.Start()
+    Write-Host "Server running at $prefix"
+}
+
+$mimeTypes = @{
+    ".html" = "text/html; charset=utf-8"
+    ".css"  = "text/css; charset=utf-8"
+    ".js"   = "application/javascript; charset=utf-8"
+    ".json" = "application/json"
+    ".png"  = "image/png"
+    ".jpg"  = "image/jpeg"
+    ".svg"  = "image/svg+xml"
+}
+
+while ($listener.IsListening) {
+    $context = $listener.GetContext()
+    $request = $context.Request
+    $response = $context.Response
+
+    $urlPath = $request.Url.LocalPath.TrimStart('/')
+    if ([string]::IsNullOrEmpty($urlPath) -or $urlPath -eq "/") {
+        $urlPath = "index.html"
+    }
+
+    $filePath = Join-Path $folder $urlPath
+
+    if (Test-Path $filePath -PathType Leaf) {
+        $ext = [System.IO.Path]::GetExtension($filePath).ToLower()
+        $contentType = $mimeTypes[$ext]
+        if (-not $contentType) { $contentType = "application/octet-stream" }
+        $response.ContentType = $contentType
+
+        $bytes = [System.IO.File]::ReadAllBytes($filePath)
+        $response.ContentLength64 = $bytes.Length
+        $response.OutputStream.Write($bytes, 0, $bytes.Length)
+    } else {
+        $response.StatusCode = 404
+        $msg = [System.Text.Encoding]::UTF8.GetBytes("404 Not Found")
+        $response.OutputStream.Write($msg, 0, $msg.Length)
+    }
+    $response.Close()
+}

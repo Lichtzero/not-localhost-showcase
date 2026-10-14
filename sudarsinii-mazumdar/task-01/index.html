@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Bangalore Pub Trail '26 | 15 Group Projects Showcase</title>
+  <meta name="description" content="A serene, illustrated trail map guiding you through 15 iconic Bengaluru pubs and 15 student group project showcases.">
+  
+  <!-- Friendly & Storybook Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome for clean icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="trail-theme">
+
+  <!-- Top Clean Navigation Bar -->
+  <header id="main-header">
+    <div class="header-left">
+      <div class="trail-compass-icon">
+        <i class="fa-solid fa-compass"></i>
+      </div>
+      <div class="brand-info">
+        <h1>THE BANGALORE PUB TRAIL</h1>
+        <p class="brand-subtitle">15 Iconic Stops &bull; 15 Engineer Project Showcases</p>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <!-- Passport Stamps Progress -->
+      <button class="trail-btn passport-btn" id="open-passport-btn" title="View Your Trail Passport">
+        <i class="fa-solid fa-stamp"></i>
+        <span id="stamp-counter">0 / 15 STAMPED</span>
+      </button>
+
+      <!-- Audio Ambience -->
+      <button class="trail-btn icon-btn" id="sound-toggle-btn" title="Toggle Nature & Pub Sounds">
+        <i class="fa-solid fa-volume-high" id="sound-icon"></i>
+      </button>
+
+      <!-- View Switcher -->
+      <div class="view-switch-box">
+        <button id="map-view-btn" class="switch-btn active" title="Illustrated Trail Map">
+          <i class="fa-solid fa-map"></i> MAP
+        </button>
+        <button id="list-view-btn" class="switch-btn" title="Directory Grid of all 15 Pubs">
+          <i class="fa-solid fa-grid-2"></i> ALL PUBS
+        </button>
+      </div>
+
+      <!-- Help Button -->
+      <button class="trail-btn icon-btn" id="controls-help-btn" title="How to explore the trail">
+        <i class="fa-solid fa-question"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Clean Filter Bar -->
+  <nav id="filter-bar">
+    <div class="filter-group">
+      <span class="filter-title"><i class="fa-solid fa-tree"></i> AREA:</span>
+      <div class="filter-chips" id="area-filters">
+        <button class="trail-chip active" data-filter="all">All Stops (15)</button>
+        <button class="trail-chip" data-filter="Indiranagar">Indiranagar (4)</button>
+        <button class="trail-chip" data-filter="Koramangala">Koramangala (4)</button>
+        <button class="trail-chip" data-filter="Central">Central / Church St (4)</button>
+        <button class="trail-chip" data-filter="Lavelle-Magrath">Lavelle & Magrath (2)</button>
+        <button class="trail-chip" data-filter="North-East">Hennur / North (1)</button>
+      </div>
+    </div>
+    
+    <div class="filter-group">
+      <span class="filter-title"><i class="fa-solid fa-code"></i> TECH:</span>
+      <div class="filter-chips" id="tech-filters">
+        <button class="trail-chip active" data-tech="all">All Stacks</button>
+        <button class="trail-chip" data-tech="AI/ML">AI & Vision</button>
+        <button class="trail-chip" data-tech="Fullstack">Fullstack</button>
+        <button class="trail-chip" data-tech="Systems">Systems & Cloud</button>
+        <button class="trail-chip" data-tech="Web3">Security & Web3</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN APP CONTAINER -->
+  <main id="app-container">
+    
+    <!-- 1. ILLUSTRATED MAP VIEW -->
+    <section id="map-viewport" class="viewport active-view">
+      <!-- Hand-Drawn Style Canvas Map -->
+      <canvas id="city-canvas"></canvas>
+
+      <!-- Interactive Pub Markers Layer -->
+      <div id="pubs-pin-layer"></div>
+
+      <!-- Clean Trail Controls & Floating Prompt -->
+      <div id="player-hud">
+        
+        <!-- Near Pub Enter Prompt -->
+        <div id="proximity-prompt" class="hidden">
+          <div class="prompt-bubble">
+            <div class="bubble-icon"><i class="fa-solid fa-beer-mug-empty"></i></div>
+            <div class="bubble-text">
+              <span class="bubble-tag">ARRIVED AT STOP:</span>
+              <h4 id="prompt-pub-name">Bob's Bar</h4>
+              <p id="prompt-project-title">Aarav Sharma &bull; FilterAI</p>
+            </div>
+            <button class="bubble-enter-btn" id="prompt-enter-btn">VISIT PUB &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Minimalist Trail Navigator (Bottom Bar) -->
+        <div class="trail-bottom-bar">
+          <div class="trail-walker-info">
+            <span class="walker-label">EXPLORER LOCATION:</span>
+            <span class="walker-stop" id="current-location-tag">Starting Trail at Byg Brewski</span>
+          </div>
+
+          <div class="trail-nav-actions">
+            <button class="trail-nav-btn" id="prev-stop-btn" title="Previous Stop">
+              <i class="fa-solid fa-arrow-left"></i> PREV STOP
+            </button>
+            <button class="trail-nav-btn highlight-btn" id="next-stop-btn" title="Walk to Next Stop along the trail">
+              NEXT STOP <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Discrete On-Screen D-Pad for Mobile / Casual Tapping -->
+        <div class="cozy-dpad" id="cozy-dpad">
+          <button class="dpad-key up" data-dir="up"><i class="fa-solid fa-chevron-up"></i></button>
+          <div class="dpad-mid">
+            <button class="dpad-key left" data-dir="left"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="dpad-key down" data-dir="down"><i class="fa-solid fa-chevron-down"></i></button>
+            <button class="dpad-key right" data-dir="right"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2. DIRECTORY / GRID VIEW -->
+    <section id="directory-viewport" class="viewport hidden-view">
+      <div class="directory-container">
+        <div class="directory-header">
+          <h2>15 Bengaluru Pubs &bull; 15 Group Projects</h2>
+          <p>Explore each stop along the trail to discover developer portfolios, live demos, and signature drinks.</p>
+        </div>
+        <div class="cards-grid" id="all-projects-grid"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PUB EXPERIENCE MODAL (Clean, Warm & Storybook) -->
+  <div id="bar-modal" class="modal-overlay hidden">
+    <div class="modal-backdrop" id="modal-backdrop-close"></div>
+    <div class="pub-clean-modal">
+      
+      <!-- Modal Header -->
+      <div class="modal-pub-header" id="modal-top-banner">
+        <div class="header-main-title">
+          <div class="pub-stop-pill" id="modal-stop-pill">STOP #1</div>
+          <h2 id="modal-pub-name">TOIT BREWPUB</h2>
+          <p class="modal-location-text" id="modal-pub-location"><i class="fa-solid fa-location-dot"></i> Indiranagar, 100ft Road</p>
+        </div>
+        <div class="header-actions">
+          <button class="stamp-modal-btn" id="stamp-this-pub-btn">
+            <i class="fa-solid fa-stamp"></i> STAMP PASSPORT
+          </button>
+          <button class="edit-modal-btn" id="edit-project-btn" title="Edit Member Details">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <button class="close-clean-btn" id="close-modal-btn">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Body Columns -->
+      <div class="modal-grid-body">
+        
+        <!-- Member Profile Column -->
+        <div class="member-column">
+          <div class="member-avatar-box">
+            <img src="" alt="Developer Avatar" id="modal-member-avatar" class="clean-avatar">
+          </div>
+          <h3 id="modal-member-name">Aarav Sharma</h3>
+          <p class="member-clean-role" id="modal-member-role">Lead Fullstack & AI Architect</p>
+          
+          <div class="snack-card">
+            <span class="snack-label"><i class="fa-solid fa-utensils"></i> RECOMMENDED BITE:</span>
+            <span class="snack-name" id="modal-member-snack">Mysore Mutton Pepper Fry</span>
+          </div>
+
+          <p class="member-quote-text" id="modal-member-quote">"Building resilient architectures that handle Bangalore traffic."</p>
+
+          <div class="member-links-row">
+            <a href="#" target="_blank" id="modal-github-link" class="social-chip"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="#" target="_blank" id="modal-linkedin-link" class="social-chip"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+            <a href="#" target="_blank" id="modal-portfolio-link" class="social-chip"><i class="fa-solid fa-globe"></i> Web</a>
+          </div>
+
+          <button class="order-clean-btn" id="order-drink-action-btn">
+            <i class="fa-solid fa-champagne-glasses"></i> POUR SIGNATURE BREW
+          </button>
+        </div>
+
+        <!-- Project Details Column -->
+        <div class="project-column">
+          <div class="project-badge-line">
+            <span class="tag-clean-pill" id="modal-project-category">FULLSTACK / AI</span>
+            <span class="area-clean-pill" id="modal-hood-chip">INDIRANAGAR</span>
+          </div>
+
+          <h3 id="modal-project-title" class="project-main-heading">FilterAI Voice Translator</h3>
+          <p id="modal-project-description" class="project-clean-desc">
+            Ultra-low latency real-time voice translation pipeline optimized for vernacular Indian languages.
+          </p>
+
+          <!-- Signature Drink Card -->
+          <div class="drink-clean-card">
+            <div class="drink-glass-icon" id="modal-drink-icon-wrap">
+              <i class="fa-solid fa-beer-mug-empty" id="modal-drink-icon"></i>
+            </div>
+            <div class="drink-info-side">
+              <div class="drink-title-row">
+                <h4 id="modal-drink-name">Filter Coffee Stout</h4>
+                <span class="clean-abv" id="modal-drink-abv">ABV: 8.5%</span>
+              </div>
+              <p id="modal-drink-notes">Roasted chicory, dark malt, and high-concurrency Redis streams.</p>
+            </div>
+          </div>
+
+          <!-- Tech Stack -->
+          <div class="clean-section">
+            <label>TECH STACK & INGREDIENTS</label>
+            <div class="tech-pills-wrap" id="modal-tech-stack"></div>
+          </div>
+
+          <!-- Highlights -->
+          <div class="clean-section">
+            <label>KEY HIGHLIGHTS</label>
+            <ul class="clean-highlights-list" id="modal-highlights-list"></ul>
+          </div>
+
+          <!-- Buttons -->
+          <div class="clean-action-row">
+            <a href="#" target="_blank" class="clean-primary-link" id="modal-live-demo-btn">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> LIVE DEMO
+            </a>
+            <a href="#" target="_blank" class="clean-secondary-link" id="modal-source-code-btn">
+              <i class="fa-brands fa-github"></i> REPO CODE
+            </a>
+            <button class="clean-icon-link" id="modal-share-btn" title="Share Project">
+              <i class="fa-solid fa-share-nodes"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Project Tab / Stats Column -->
+        <div class="tab-column">
+          <div class="cozy-receipt-card">
+            <div class="receipt-top-emblem">🍺 TRAIL TAB 🍺</div>
+            <h4 id="receipt-pub-name">BOB'S BAR</h4>
+            <div class="receipt-dashed-line"></div>
+            
+            <div class="receipt-stat-row">
+              <span>COMMITS</span>
+              <strong id="receipt-commits">342</strong>
+            </div>
+            <div class="receipt-stat-row">
+              <span>LINES OF CODE</span>
+              <strong id="receipt-loc">24,800</strong>
+            </div>
+            <div class="receipt-stat-row">
+              <span>TEST COVERAGE</span>
+              <strong id="receipt-coverage">96.4%</strong>
+            </div>
+            <div class="receipt-stat-row">
+              <span>LATENCY</span>
+              <strong id="receipt-latency">74ms</strong>
+            </div>
+            <div class="receipt-stat-row">
+              <span>CAFFEINE SPENT</span>
+              <strong id="receipt-caffeine">168 Cups</strong>
+            </div>
+            <div class="receipt-dashed-line"></div>
+            <div class="receipt-stat-row total-status-row">
+              <span>STATUS</span>
+              <span class="ready-badge" id="receipt-status">PROD READY</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PASSPORT MODAL -->
+  <div id="passport-modal" class="modal-overlay hidden">
+    <div class="modal-backdrop" id="passport-backdrop-close"></div>
+    <div class="passport-clean-card">
+      <div class="passport-header">
+        <div class="passport-title-wrap">
+          <i class="fa-solid fa-passport"></i>
+          <div>
+            <h3>TRAIL EXPEDITION PASSPORT</h3>
+            <p>Visit all 15 pubs to collect your verified exploration stamps!</p>
+          </div>
+        </div>
+        <button class="close-clean-btn" id="close-passport-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="passport-progress-box">
+        <div class="progress-number">
+          <span id="passport-visited-count">0</span> / 15 STAMPS COLLECTED
+        </div>
+        <p id="passport-trophy-text">Walk the trail to visit each group member and collect stamps!</p>
+      </div>
+
+      <!-- Stamps Grid -->
+      <div class="clean-stamps-grid" id="stamps-grid-container"></div>
+
+      <div class="passport-actions">
+        <button class="trail-btn" id="stamp-all-debug-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> Collect All</button>
+        <button class="trail-btn primary" id="export-passport-btn"><i class="fa-solid fa-download"></i> Save Passport</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT MEMBER MODAL -->
+  <div id="edit-modal" class="modal-overlay hidden">
+    <div class="modal-backdrop" id="edit-backdrop-close"></div>
+    <div class="edit-clean-card">
+      <div class="edit-header">
+        <h3><i class="fa-solid fa-user-pen"></i> Edit Member & Project</h3>
+        <button class="close-clean-btn" id="close-edit-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="edit-member-form">
+        <input type="hidden" id="edit-pub-id">
+        <div class="form-row-2">
+          <div class="form-field">
+            <label>Member Name</label>
+            <input type="text" id="edit-name" required>
+          </div>
+          <div class="form-field">
+            <label>Role</label>
+            <input type="text" id="edit-role" required>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Project Title</label>
+          <input type="text" id="edit-title" required>
+        </div>
+        <div class="form-field">
+          <label>Description</label>
+          <textarea id="edit-desc" rows="3" required></textarea>
+        </div>
+        <div class="form-row-2">
+          <div class="form-field">
+            <label>Tech Stack (comma separated)</label>
+            <input type="text" id="edit-tech" required>
+          </div>
+          <div class="form-field">
+            <label>Signature Drink</label>
+            <input type="text" id="edit-drink" required>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-field">
+            <label>GitHub Link</label>
+            <input type="url" id="edit-github">
+          </div>
+          <div class="form-field">
+            <label>Live Demo URL</label>
+            <input type="url" id="edit-demo">
+          </div>
+        </div>
+        <div class="form-buttons">
+          <button type="button" class="trail-btn" id="cancel-edit-btn">Cancel</button>
+          <button type="submit" class="trail-btn primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- HELP MODAL -->
+  <div id="help-modal" class="modal-overlay hidden">
+    <div class="modal-backdrop" id="help-backdrop-close"></div>
+    <div class="help-clean-card">
+      <div class="help-clean-header">
+        <h3><i class="fa-solid fa-map-location-dot"></i> How to Explore the Trail</h3>
+        <button class="close-clean-btn" id="close-help-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="help-guide-list">
+        <div class="guide-item">
+          <div class="guide-icon"><i class="fa-solid fa-person-hiking"></i></div>
+          <div class="guide-desc">
+            <strong>Follow the Trail:</strong> Click any pub marker or use the <strong>NEXT STOP</strong> button to watch your hiker stroll along the dotted path.
+          </div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-icon"><i class="fa-solid fa-keyboard"></i></div>
+          <div class="guide-desc">
+            <strong>Walk Freely:</strong> Use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or <kbd>&uarr;</kbd><kbd>&larr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd> to walk anywhere across the map.
+          </div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-icon"><i class="fa-solid fa-beer-mug-empty"></i></div>
+          <div class="guide-desc">
+            <strong>Inspect Projects:</strong> Step close to any pub or click on it to open that student's showcase, live demo, and signature cocktail.
+          </div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-icon"><i class="fa-solid fa-stamp"></i></div>
+          <div class="guide-desc">
+            <strong>Stamp Your Passport:</strong> Collect all 15 stamps to complete the expedition!
+          </div>
+        </div>
+      </div>
+      <button class="trail-btn primary full-width" id="got-it-btn">START EXPLORING &rarr;</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast-container"></div>
+
+  <!-- Cozy Drink Pour Animation Layer -->
+  <div id="drink-animation-layer" class="hidden">
+    <div class="clean-glass-pour">
+      <div class="glass-fill-level" id="pour-liquid"></div>
+    </div>
+    <div class="pour-toast-text" id="pour-caption-text">Pouring Fresh Brew...</div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
