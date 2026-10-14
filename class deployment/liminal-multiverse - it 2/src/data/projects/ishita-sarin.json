@@ -1,10 +1,10 @@
 {
   "id": "ishita-sarin",
-  "url": "https://benevolent-malabi-99261a.netlify.app",
+  "url": "https://neurowalk.netlify.app/",
   "code": "SPHERE-06 // ISHITA-SARIN",
   "title": "ISHITA SARIN",
-  "subtitle": "Memory_capsulation",
-  "year": "2050 CE",
+  "subtitle": "Neurospace",
+  "year": "2081",
   "sector": "PLANETARY ALGORITHMS",
   "themeColor": "#c2185b",
   "sphere": {
@@ -45,7 +45,7 @@
   },
   "observerFigure": {
     "stance": "surveyor",
-    "quote": "“A one-line description of the project goes here.”",
+    "quote": "“This site imagines a 2081 where a company called mémoire records, sells, and edits every memory, letting visitors experience nine lives shaped by that reality.”",
     "beaconColor": "#ff007f"
   },
   "wizardOwner": {
