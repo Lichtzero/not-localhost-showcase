@@ -1,11 +1,11 @@
 {
   "id": "moulik-nanda",
-  "url": "https://example.com",
+  "url": "https://moulik-nanda-portfolio.vercel.app/",
   "code": "SPHERE-10 // MOULIK-NANDA",
   "title": "MOULIK NANDA",
-  "subtitle": "Project title goes here",
+  "subtitle": "interactive personal website that doubles as a portfolio, look around the house for easter eggs or take a deeper dive into my projects",
   "year": "2050 CE",
-  "sector": "BIOMETRICS & PERCEPTION",
+  "sector": "kepler 1",
   "themeColor": "#64dd17",
   "sphere": {
     "radius": 2.8,
@@ -45,12 +45,12 @@
   },
   "observerFigure": {
     "stance": "wanderer",
-    "quote": "“A one-line description of the project goes here.”",
+    "quote": "my lil space",
     "beaconColor": "#76ff03"
   },
   "wizardOwner": {
     "name": "Moulik Nanda",
     "wizardTitle": "Speculative Designer",
-    "avatarRune": "🦌"
+    "avatarRune": "🐐"
   }
 }
