@@ -1,9 +1,9 @@
 {
   "id": "gouri-ghushe",
-  "url": "https://example.com",
+  "url": "file:///Users/gouri/Desktop/last-mirror-single-body-profile-recommendation.html",
   "code": "SPHERE-03 // GOURI-GHUSHE",
   "title": "GOURI GHUSHE",
-  "subtitle": "Project title goes here",
+  "subtitle": "THE LAST MIRROR — “WHO ARE YOU ALLOWED TO BE?”",
   "year": "2050 CE",
   "sector": "PLANETARY ALGORITHMS",
   "themeColor": "#00c853",
@@ -45,7 +45,7 @@
   },
   "observerFigure": {
     "stance": "wanderer",
-    "quote": "“A one-line description of the project goes here.”",
+    "quote": "“The Last Mirror is a speculative, interactive biometric-mirror experience that walks you through a machine seeing, measuring, classifying, predicting, and recommending who you are, and asks who gets to decide what those measurements mean.”",
     "beaconColor": "#00e676"
   },
   "wizardOwner": {

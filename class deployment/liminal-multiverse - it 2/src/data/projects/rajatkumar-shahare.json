@@ -1,11 +1,11 @@
 {
   "id": "rajatkumar-shahare",
-  "url": "https://example.com",
+  "url": "https://gridskip.vercel.app/",
   "code": "SPHERE-13 // RAJATKUMAR-SHAHARE",
   "title": "RAJATKUMAR SHAHARE",
-  "subtitle": "Project title goes here",
-  "year": "2050 CE",
-  "sector": "BIOMETRICS & PERCEPTION",
+  "subtitle": "Gridskip",
+  "year": "2026",
+  "sector": "COUNTER-INFRASTRUCTURES",
   "themeColor": "#455a64",
   "sphere": {
     "radius": 2.8,
@@ -45,12 +45,12 @@
   },
   "observerFigure": {
     "stance": "sentinel",
-    "quote": "“A one-line description of the project goes here.”",
+    "quote": "“A messenger you can open, rebuild, and own.”",
     "beaconColor": "#90a4ae"
   },
   "wizardOwner": {
     "name": "Rajatkumar Shahare",
     "wizardTitle": "Speculative Designer",
-    "avatarRune": "🪞"
+    "avatarRune": "📻"
   }
 }

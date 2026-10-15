@@ -1,11 +1,11 @@
 {
   "id": "ashani-gorakhnath",
-  "url": "https://example.com",
+  "url": "https://ideakutir.vercel.app/",
   "code": "SPHERE-02 // ASHANI-GORAKHNATH",
-  "title": "ASHANI GORAKHNATH",
-  "subtitle": "Project title goes here",
-  "year": "2050 CE",
-  "sector": "SYNTHETIC ENTITIES",
+  "title": "ideaphoria",
+  "subtitle": "Ideakutir",
+  "year": "0",
+  "sector": "PLANETARY ALGORITHMS!",
   "themeColor": "#7b1fa2",
   "sphere": {
     "radius": 2.6,
@@ -45,12 +45,12 @@
   },
   "observerFigure": {
     "stance": "monolith",
-    "quote": "“A one-line description of the project goes here.”",
-    "beaconColor": "#ba68c8"
+    "quote": "“Ideakutir is an interactive 3D ASCII portfolio that transforms a house into an explorable space for discovering my design work, research, and creative practice.”",
+    "beaconColor": "#769EFD"
   },
   "wizardOwner": {
-    "name": "Ashani Gorakhnath",
-    "wizardTitle": "Speculative Designer",
-    "avatarRune": "🔮"
+    "name": "ideaphoria",
+    "wizardTitle": "Speculating Designer",
+    "avatarRune": "🏠"
   }
 }

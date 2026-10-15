@@ -274,33 +274,37 @@ html, body {
 }
 
 /* ==============================================================================
-   HERO / INTRO OVERLAY (From PDF Page 2 inspiration)
+   HERO / INTRO OVERLAY (From PDF Page 2 inspiration - Centered)
    ============================================================================== */
 .hero-stage {
-  position: absolute;
-  top: 75px;
-  left: 0;
-  width: 100%;
-  pointer-events: none;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 24px;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 90% !important;
+  max-width: 900px !important;
+  pointer-events: none !important;
+  z-index: 10 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 24px !important;
+  margin: 0 !important;
+  transition: opacity 0.4s ease, transform 0.4s ease !important;
 }
 
 .hero-stage.minimized {
-  opacity: 0;
-  transform: translateY(-20px);
-  pointer-events: none;
+  opacity: 0 !important;
+  transform: translate(-50%, -60%) !important;
+  pointer-events: none !important;
 }
 
 .hero-box {
-  text-align: center;
-  max-width: 900px;
-  pointer-events: auto;
-  position: relative;
+  text-align: center !important;
+  width: 100% !important;
+  pointer-events: auto !important;
+  position: relative !important;
 }
 
 /* Handwritten Cursive Line */

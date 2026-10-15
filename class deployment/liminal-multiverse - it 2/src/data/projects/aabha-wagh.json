@@ -1,10 +1,10 @@
 {
   "id": "aabha-wagh",
-  "url": "https://example.com",
+  "url": "https://dacian-era-cglt.onrender.com/",
   "code": "SPHERE-01 // AABHA-WAGH",
   "title": "AABHA WAGH",
-  "subtitle": "Project title goes here",
-  "year": "2050 CE",
+  "subtitle": "DACian era",
+  "year": "2070 CE",
   "sector": "BIOMETRICS & PERCEPTION",
   "themeColor": "#ff3d00",
   "sphere": {
@@ -45,12 +45,12 @@
   },
   "observerFigure": {
     "stance": "surveyor",
-    "quote": "“A one-line description of the project goes here.”",
+    "quote": "“A speculative sound-mapping web app where memory lives in places and is found by listening.”",
     "beaconColor": "#ff3d00"
   },
   "wizardOwner": {
     "name": "Aabha Wagh",
     "wizardTitle": "Speculative Designer",
-    "avatarRune": "👁️"
+    "avatarRune": "📟"
   }
 }
